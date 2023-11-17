@@ -17,10 +17,9 @@ class Command(BaseCommand):
         parser.add_argument("-i", "--id", type=int, help="ID of the Agent")
 
     def handle(self, *args, **kwargs):
-        agent_alias = kwargs["alias"]
         agent_id = kwargs["id"]
 
-        if agent_alias:
+        if agent_alias := kwargs["alias"]:
             agent = Agent.objects.get(alias=agent_alias)
         elif agent_id:
             agent = Agent.objects.get(id=agent_id)
@@ -48,7 +47,7 @@ class Command(BaseCommand):
                 "dumpdata",
                 model,
                 "--indent=2",
-                "--pks={}".format(pks),
+                f"--pks={pks}",
                 "--natural-foreign",
                 stdout=output,
             )

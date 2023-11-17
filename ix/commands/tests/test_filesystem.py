@@ -36,7 +36,7 @@ class TestWriteToFile:
         content = "Hello, world!"
         file_path = "test.txt"
         expected_path = mock_workdir / file_path
-        write_to_file(str(file_path), content)
+        write_to_file(file_path, content)
         assert expected_path.exists()
         with open(expected_path, "r") as f:
             assert f.read() == content

@@ -58,7 +58,7 @@ def get_config_variables(config: Dict[str, Any]) -> Set[str]:
     """
     variables = set()
     if isinstance(config, dict):
-        for key, value in config.items():
+        for value in config.values():
             variables.update(get_config_variables(value))
     elif isinstance(config, list):
         for item in config:

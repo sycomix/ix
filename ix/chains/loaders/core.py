@@ -91,8 +91,7 @@ def load_secrets(config: dict, node_type: NodeType):
         if field["input_type"] == "secret":
             if field["name"] not in config:
                 continue
-            secret_id = config[field["name"]]
-            if secret_id:
+            if secret_id := config[field["name"]]:
                 to_load.add(secret_id)
 
     # load secrets and update config
@@ -186,22 +185,20 @@ def load_node(
             # ix specific features into the config dict
             logger.debug(f"Loading with property loader for type={node_type.type}")
             config[key] = property_loader(node_group, context)
+        elif connector.get("multiple", False):
+            config[key] = [
+                prop_node.load(context, root=False) for prop_node in node_group
+            ]
+        elif len(node_group) > 1:
+            raise ValueError(f"Multiple values for {key} not allowed")
         else:
-            # default recursive loading
-            if connector.get("multiple", False):
-                config[key] = [
-                    prop_node.load(context, root=False) for prop_node in node_group
-                ]
-            else:
-                if len(node_group) > 1:
-                    raise ValueError(f"Multiple values for {key} not allowed")
-                config[key] = load_node(
-                    node_group[0],
-                    context,
-                    root=False,
-                    variables=variables,
-                    as_template=connector_is_template,
-                )
+            config[key] = load_node(
+                node_group[0],
+                context,
+                root=False,
+                variables=variables,
+                as_template=connector_is_template,
+            )
 
     # converted flattened property groups back into nested properties. Fields with
     # the same parent are grouped together into a single object. By default, groups

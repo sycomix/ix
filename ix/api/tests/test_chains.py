@@ -211,8 +211,7 @@ class TestNodeTypeOwnership(OwnershipTestsMixin):
     object_type = "node_types"
 
     async def setup_object(self, **kwargs):
-        node_type = await afake_node_type(**kwargs)
-        return node_type
+        return await afake_node_type(**kwargs)
 
     async def get_create_data(self):
         return {

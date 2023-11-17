@@ -146,19 +146,17 @@ async def sync_chain_agent(chain: Chain, alias: str) -> None:
     Adjust the state of the agent to match the chain.
     """
     if chain.is_agent:
-        if not await Agent.objects.filter(chain=chain).aexists():
-            await create_chain_agent(chain, alias=alias)
-        else:
+        if await Agent.objects.filter(chain=chain).aexists():
             # sync properties to existing agent
             await Agent.objects.filter(chain=chain, is_test=False).aupdate(
                 name=chain.name,
                 alias=alias,
                 purpose=chain.description,
             )
-    else:
-        # destroy agent if it exists
-        if await Agent.objects.filter(chain=chain, is_test=False).aexists():
-            await Agent.objects.filter(chain=chain, is_test=False).adelete()
+        else:
+            await create_chain_agent(chain, alias=alias)
+    elif await Agent.objects.filter(chain=chain, is_test=False).aexists():
+        await Agent.objects.filter(chain=chain, is_test=False).adelete()
 
 
 @router.put("/chains/{chain_id}", response_model=ChainPydantic, tags=["Chains"])

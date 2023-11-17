@@ -21,14 +21,12 @@ def fake_secret_type(**kwargs) -> SecretType:
     """
     name = kwargs.get("name", "test_service")
 
-    secret_type = SecretType.objects.create(
+    return SecretType.objects.create(
         name=name,
         fields_schema=MockAccount.model_json_schema(),
         user=kwargs.get("user", get_default_user()),
         group=kwargs.get("group", None),
     )
-
-    return secret_type
 
 
 async def afake_secret_type(**kwargs) -> SecretType:
@@ -53,14 +51,12 @@ def fake_secret(**kwargs) -> Secret:
     type_id = kwargs.get("type_id", get_mock_secret_type().id)
     name = kwargs.get("name", "default instance")
 
-    secret = Secret.objects.create(
+    return Secret.objects.create(
         type_id=type_id,
         name=name,
         user=kwargs.get("user", get_default_user()),
         group=kwargs.get("group", None),
     )
-
-    return secret
 
 
 async def afake_secret(**kwargs) -> Secret:

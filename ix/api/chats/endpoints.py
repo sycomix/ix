@@ -216,12 +216,7 @@ def get_artifacts(user_input):
     # Pattern to find all instances of text enclosed in curly braces.
     pattern = r"\{(.*?)\}"
 
-    # re.findall returns all non-overlapping matches of pattern in string, as a list of strings.
-    # The string is scanned left-to-right, and matches are returned in the order found.
-    matches = re.findall(pattern, user_input)
-
-    # Return the list of matches.
-    return matches
+    return re.findall(pattern, user_input)
 
 
 @router.get(

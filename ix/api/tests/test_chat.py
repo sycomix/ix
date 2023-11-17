@@ -209,8 +209,7 @@ class TestChatOwnership(OwnershipTestsMixin):
     object_type = "chats"
 
     async def setup_object(self, **kwargs):
-        chat = await afake_chat(id=uuid4(), **kwargs)
-        return chat
+        return await afake_chat(id=uuid4(), **kwargs)
 
     async def get_create_data(self):
         return {}

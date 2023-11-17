@@ -33,9 +33,7 @@ def get_memory_option(cls: Type[BaseModel], name: str, default: Any):
         # Pydantic v1/v2 compat, some BaseModels will still fall into this category
         # need to check for ModelField for that case.
         field = cls.__fields__.get(name, default)
-        if isinstance(field, ModelField):
-            return field.default
-        return field
+        return field.default if isinstance(field, ModelField) else field
     elif hasattr(cls, name):
         # support for regular classes
         return getattr(cls, name)
@@ -140,8 +138,7 @@ def get_memory_session(
     scope = config.pop("session_scope", "chat")
     if scope in {"", None}:
         scope = "chat"
-    supported_scopes = get_memory_option(cls, "supported_scopes", False)
-    if supported_scopes:
+    if supported_scopes := get_memory_option(cls, "supported_scopes", False):
         assert scope in supported_scopes
 
     # load session_id from context based on scope
@@ -156,9 +153,7 @@ def get_memory_session(
     else:
         raise ValueError(f"unknown scope={scope}")
 
-    # build session_id
-    prefix = config.pop("session_prefix", None)
-    if prefix:
+    if prefix := config.pop("session_prefix", None):
         session_id = f"{prefix}_{scope}_{scope_id}"
     else:
         session_id = f"{scope}_{scope_id}"

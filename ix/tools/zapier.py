@@ -9,5 +9,4 @@ def zapier_toolkit(**kwargs) -> ZapierToolkit:
     """
 
     zapier = ZapierNLAWrapper(**kwargs)
-    toolkit = ZapierToolkit.from_zapier_nla_wrapper(zapier)
-    return toolkit
+    return ZapierToolkit.from_zapier_nla_wrapper(zapier)

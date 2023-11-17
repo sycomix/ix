@@ -81,23 +81,22 @@ def exception_to_string(excp: Exception) -> str:
     else:
         stack_trace = stack_trace[:-1]  # Remove call to print_stack
 
-    # HAX: incredibly hacky way to remove the celery stack trace from the error.
-    #      this drops ~60 lines from the traceback.
-    start_index = 0
-    for i, trace in enumerate(stack_trace):
-        if [trace.filename, trace.name] == [
-            "/usr/local/lib/python3.11/site-packages/celery/app/trace.py",
-            "__protected_call__",
-        ]:
-            start_index = i + 1
-            break
-
-    traceback_str = ""
-    for i in stack_trace[start_index:]:
-        traceback_str += (
-            f'File "{i.filename}", line {i.lineno}, in {i.name}\n    {i.line}\n'
-        )
-    return traceback_str
+    start_index = next(
+        (
+            i + 1
+            for i, trace in enumerate(stack_trace)
+            if [trace.filename, trace.name]
+            == [
+                "/usr/local/lib/python3.11/site-packages/celery/app/trace.py",
+                "__protected_call__",
+            ]
+        ),
+        0,
+    )
+    return "".join(
+        f'File "{i.filename}", line {i.lineno}, in {i.name}\n    {i.line}\n'
+        for i in stack_trace[start_index:]
+    )
 
 
 class IxHandler(AsyncCallbackHandler):
@@ -325,7 +324,7 @@ class IxHandler(AsyncCallbackHandler):
             for handler in run_manager.handlers
             if isinstance(handler, IxHandler)
         ]
-        if len(ix_handlers) == 0:
+        if not ix_handlers:
             raise ValueError("Expected at least one IxHandler in run_manager")
         if len(ix_handlers) != 1:
             raise ValueError("Expected exactly one IxHandler in run_manager")

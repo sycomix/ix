@@ -104,8 +104,8 @@ class TestSecretTypes:
         assert response.status_code == 200, response.content
 
         await secret_type.arefresh_from_db()
-        assert not secret_type.user_id == new_user.id
-        assert not secret_type.group_id == new_group.id
+        assert secret_type.user_id != new_user.id
+        assert secret_type.group_id != new_group.id
 
     async def test_delete_secret_type(self, auser):
         secret_type = await afake_secret_type(name="Secret Type to Delete")

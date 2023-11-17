@@ -30,10 +30,7 @@ def initialize_vectorstore(class_path: str, config: Dict[str, Any]) -> VectorSto
     vectorstore_class: Type[VectorStore] = import_class(class_path)
     vectorstore = None
 
-    # Ingest and load from documents if TextSplitters or BaseLoaders
-    # is configured as a document source.
-    document_source = config.pop("documents", None)
-    if document_source:
+    if document_source := config.pop("documents", None):
         if isinstance(document_source, TextSplitterShim):
             document_loader = document_source.document_loader
             documents = document_source.text_splitter.split_documents(
@@ -55,8 +52,7 @@ def initialize_vectorstore(class_path: str, config: Dict[str, Any]) -> VectorSto
     # Initialize vectorstore without ingesting documents. The vectorstore will
     # only have access to documents that are already in the database.
     if not vectorstore:
-        embedding_function = config.pop("embedding", None)
-        if embedding_function:
+        if embedding_function := config.pop("embedding", None):
             config["embedding_function"] = embedding_function
         vectorstore = vectorstore_class(**config)
 

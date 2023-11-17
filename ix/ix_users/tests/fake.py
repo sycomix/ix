@@ -32,8 +32,7 @@ async def afake_user(**kwargs):
 def get_default_user():
     user_model = get_user_model()
     try:
-        user = user_model.objects.earliest("id")
-        return user
+        return user_model.objects.earliest("id")
     except user_model.DoesNotExist:
         return fake_user()
 
@@ -62,8 +61,7 @@ async def afake_group(**kwargs):
 def get_default_group():
     group_model = Group
     try:
-        group = group_model.objects.earliest("id")
-        return group
+        return group_model.objects.earliest("id")
     except group_model.DoesNotExist:
         return fake_group()
 

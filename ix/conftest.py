@@ -223,7 +223,7 @@ def mock_openai_streaming(mocker, mock_openai_key):
 
 def fake_embeddings(n: int = 1) -> List[List[float]]:
     """Fake a list of embeddings."""
-    return [[0.5 for x in range(1536)] for n in range(n)]
+    return [[0.5 for _ in range(1536)] for _ in range(n)]
 
 
 @pytest.fixture

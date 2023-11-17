@@ -16,7 +16,7 @@ class VectorField(ArrayField):
         """
         Returns the database type for this field.
         """
-        return "vector(%s)" % self.size
+        return f"vector({self.size})"
 
     def __init__(self, *args, size=OPEN_AI, **kwargs):
         """

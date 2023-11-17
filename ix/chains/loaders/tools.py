@@ -8,8 +8,8 @@ def extract_tool_kwargs(kwargs: dict) -> dict:
     """
     Extract tool kwargs from kwargs.
     """
-    tool_kwargs = {}
-    for key, value in list(kwargs.items()):
-        if key in TOOL_BASE_FIELD_NAMES:
-            tool_kwargs[key] = kwargs.pop(key)
-    return tool_kwargs
+    return {
+        key: kwargs.pop(key)
+        for key, value in list(kwargs.items())
+        if key in TOOL_BASE_FIELD_NAMES
+    }

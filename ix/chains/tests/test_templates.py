@@ -37,8 +37,7 @@ async def aloader_template(anode_types, aix_context) -> NodeTemplate:
         chain, TEXT_SPLITTER
     )
     assert isinstance(chain_node, ChainNode)
-    template = NodeTemplate(node=chain_node, context=aix_context)
-    return template
+    return NodeTemplate(node=chain_node, context=aix_context)
 
 
 @pytest.fixture()
@@ -46,8 +45,7 @@ def loader_template(node_types, ix_context) -> NodeTemplate:
     chain = fake_chain()
     chain_node = ChainNode.objects.create_from_config(chain, TEXT_SPLITTER)
     assert isinstance(chain_node, ChainNode)
-    template = NodeTemplate(node=chain_node, context=ix_context)
-    return template
+    return NodeTemplate(node=chain_node, context=ix_context)
 
 
 class Foo(BaseModel):

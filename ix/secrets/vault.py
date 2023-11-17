@@ -143,15 +143,6 @@ class UserVaultClient:
         #      managing user tokens & policies. This will be fixed in the future.
         return settings.VAULT_ROOT_KEY
 
-        # Use the provided token if it's available.
-        if self._provided_token:
-            return self._provided_token
-
-        # Otherwise, fetch the token using get_user_token.
-        fetched_token = get_user_token(self.user.id)
-        assert fetched_token is not None
-        return fetched_token
-
     @cached_property
     def client(self):
         return get_client(self.token)

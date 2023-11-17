@@ -11,7 +11,7 @@ class MockChatOpenAI(ChatOpenAI):
     acompletion_with_retry: Any = None
     streaming: bool = False
 
-    def validate_environment(cls, values: Dict) -> Dict:
+    def validate_environment(self, values: Dict) -> Dict:
         return {}
 
     def set_return_value(self, return_value: Any):
