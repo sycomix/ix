@@ -77,8 +77,6 @@ def print_docker_logs():
             print(output.decode())
         except subprocess.CalledProcessError as e:
             print(f"Error: {e}")
-    else:
-        pass
 
 
 def manage_vault(vault_address, vault_dir, unseal_file, token_file):

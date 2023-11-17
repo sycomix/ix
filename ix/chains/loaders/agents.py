@@ -33,9 +33,10 @@ def initialize_agent(agent: AgentType, **kwargs) -> Chain:
                     f"Memory component {component} has return_messages=False. Agents require "
                     f"return_messages=True."
                 )
-            for memory_key in component.memory_variables:
-                placeholders.append(MessagesPlaceholder(variable_name=memory_key))
-
+            placeholders.extend(
+                MessagesPlaceholder(variable_name=memory_key)
+                for memory_key in component.memory_variables
+            )
     # Re-pack agent_kwargs__* arguments into agent_kwargs
     agent_kwargs = {
         "extra_prompt_messages": placeholders,
@@ -51,7 +52,7 @@ def initialize_agent(agent: AgentType, **kwargs) -> Chain:
     if "tools" in kwargs:
         tools = kwargs["tools"]
         unpacked_tools = []
-        for i, value in enumerate(tools):
+        for value in tools:
             if isinstance(value, BaseToolkit):
                 unpacked_tools.extend(value.get_tools())
             else:

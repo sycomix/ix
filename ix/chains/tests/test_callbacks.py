@@ -57,7 +57,7 @@ class TestIxHandler:
         handler = IxHandler(agent=agent, chain=chain, task=task)
         langchain_chain = await aload_chain(CHAIN_WITH_LLM)
         langchain_chain.llm.streaming = True
-        assert langchain_chain.llm.streaming is True
+        assert langchain_chain.llm.streaming
 
         result = await langchain_chain.acall(
             inputs=dict(user_input="testing"), callbacks=[handler]

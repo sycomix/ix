@@ -44,19 +44,14 @@ from ix.chains.fixture_src.vectorstores import VECTORSTORES
 from ix.chains.models import NodeType
 from ix.secrets.models import SecretType
 
-COMPONENTS = []
-
-# Embeddings
-COMPONENTS.extend(
-    [
-        OPENAI_EMBEDDINGS,
-        GOOGLE_PALM_EMBEDDINGS,
-        LLAMA_CPP_EMBEDDINGS,
-        VERTEXAI_EMBEDDINGS,
-        HUGGINGFACE_EMBEDDINGS,
-        MOSAICML_INSTRUCTOR_EMBEDDINGS,
-    ]
-)
+COMPONENTS = [
+    OPENAI_EMBEDDINGS,
+    GOOGLE_PALM_EMBEDDINGS,
+    LLAMA_CPP_EMBEDDINGS,
+    VERTEXAI_EMBEDDINGS,
+    HUGGINGFACE_EMBEDDINGS,
+    MOSAICML_INSTRUCTOR_EMBEDDINGS,
+]
 
 # Agents
 COMPONENTS.extend(AGENTS)
@@ -70,40 +65,20 @@ COMPONENTS.extend(LLMS)
 COMPONENTS.extend(CHAINS)
 COMPONENTS.extend(ROUTING_CHAINS)
 
-# OpenAI Functions
 COMPONENTS.extend(
     [
         FUNCTION_SCHEMA,
         FUNCTION_OUTPUT_PARSER,
         OPENAPI_CHAIN,
-    ]
-)
-
-# Prompts
-COMPONENTS.extend(
-    [
         CHAT_PROMPT_TEMPLATE,
-    ]
-)
-
-# Memory
-COMPONENTS.extend(
-    [
         CONVERSATION_BUFFER_MEMORY,
         CONVERSATION_BUFFER_WINDOW_MEMORY,
         CONVERSATION_SUMMARY_BUFFER_MEMORY,
         CONVERSATION_TOKEN_BUFFER_MEMORY,
-    ]
-)
-
-# Memory Backends
-COMPONENTS.extend(
-    [
         REDIS_MEMORY_BACKEND,
         FILESYSTEM_MEMORY_BACKEND,
     ]
 )
-
 # Document retrieval
 COMPONENTS.extend(PARSERS)
 COMPONENTS.extend(TEXT_SPLITTERS)
@@ -115,21 +90,7 @@ COMPONENTS.extend(RETRIEVERS)
 COMPONENTS.extend([CHAT_MODERATOR_TYPE])
 COMPONENTS.extend(AGENT_INTERACTION_CHAINS)
 
-# IX Artifacts
-COMPONENTS.extend(
-    [
-        ARTIFACT_MEMORY,
-        SAVE_ARTIFACT,
-    ]
-)
-
-# Testing
-COMPONENTS.extend(
-    [
-        MOCK_MEMORY,
-        MOCK_CHAIN,
-    ]
-)
+COMPONENTS.extend([ARTIFACT_MEMORY, SAVE_ARTIFACT, MOCK_MEMORY, MOCK_CHAIN])
 
 
 class Command(BaseCommand):

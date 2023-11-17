@@ -20,8 +20,7 @@ class SyncToAsyncRun:
         **kwargs: Any,
     ) -> str:
         """Use the tool asynchronously."""
-        result = await sync_to_async(self._run)(*args, **kwargs)
-        return result
+        return await sync_to_async(self._run)(*args, **kwargs)
 
 
 class SyncToAsyncCall:
@@ -39,5 +38,4 @@ class SyncToAsyncCall:
         run_manager: Optional[CallbackManagerForChainRun] = None,
     ) -> str:
         """Use the tool asynchronously."""
-        result = await sync_to_async(self._call)(inputs, run_manager=run_manager)
-        return result
+        return await sync_to_async(self._call)(inputs, run_manager=run_manager)

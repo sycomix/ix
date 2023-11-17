@@ -137,12 +137,11 @@ async def validate_secret_type(secret: CreateSecret, user: AbstractUser) -> Secr
     if not secret.type_id:
         # embedded type creation
         return await create_secret_type_for_data(user, secret)
-    else:
-        # validate user can access type
-        try:
-            return await SecretType.filtered_owners(user).aget(pk=secret.type_id)
-        except SecretType.DoesNotExist:
-            raise HTTPException(status_code=422, detail="Invalid secret type")
+    # validate user can access type
+    try:
+        return await SecretType.filtered_owners(user).aget(pk=secret.type_id)
+    except SecretType.DoesNotExist:
+        raise HTTPException(status_code=422, detail="Invalid secret type")
 
 
 @router.post("/secrets/", response_model=SecretPydantic, tags=["Secrets"])

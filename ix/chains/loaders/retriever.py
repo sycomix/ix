@@ -37,19 +37,17 @@ def load_retriever_property(
     node = node_group[0]
     component_class = import_class(node.class_path)
 
-    if isinstance(component_class, type) and issubclass(component_class, VectorStore):
-        # unpack retriever fields from vectorstore config
-        config = deepcopy(node.config)
-        retriever_fields = get_vectorstore_retriever_fieldnames(node.class_path)
-        retriever_config = {}
-        for field in retriever_fields:
-            if field in config:
-                retriever_config[field] = config[field]
-
-        # load vectorstore and then convert to retriever
-        component = load_node(node, context)
-        return component.as_retriever(**retriever_config)
-
-    else:
+    if not isinstance(component_class, type) or not issubclass(
+        component_class, VectorStore
+    ):
         # return as a regular component
         return load_node(node, context)
+    # unpack retriever fields from vectorstore config
+    config = deepcopy(node.config)
+    retriever_fields = get_vectorstore_retriever_fieldnames(node.class_path)
+    retriever_config = {
+        field: config[field] for field in retriever_fields if field in config
+    }
+    # load vectorstore and then convert to retriever
+    component = load_node(node, context)
+    return component.as_retriever(**retriever_config)

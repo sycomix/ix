@@ -30,15 +30,13 @@ def fake_datasource(**kwargs):
     retrieval_chain = kwargs.get("retrieval_chain", fake_chain())
     fake_chain_node(chain=retrieval_chain)
 
-    datasource = DataSource.objects.create(
+    return DataSource.objects.create(
         name=name,
         user=user,
         description=description,
         config=config,
         retrieval_chain=retrieval_chain,
     )
-
-    return datasource
 
 
 async def afake_datasource(**kwargs):

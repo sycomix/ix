@@ -43,8 +43,7 @@ class ArtifactMemory(BaseMemory):
 
         # search for artifacts
         text = ""
-        artifact_keys = inputs.get(self.input_key, None)
-        if artifact_keys:
+        if artifact_keys := inputs.get(self.input_key, None):
             id_clauses = Q(key__in=artifact_keys) | Q(name__in=artifact_keys)
             try:
                 id_clauses |= Q(

@@ -34,15 +34,14 @@ class OpenAIFunctionParser(BaseLLMOutputParser, BaseModel):
 
     def parse_result(self, result: List[Generation]) -> T:
         additional_kwargs = result[0].message.additional_kwargs
-        if "function_call" in additional_kwargs:
-            function_call = additional_kwargs["function_call"]
-            if self.parse_json:
-                if isinstance(function_call, str):
-                    function_call = json.loads(function_call)
-
-                if isinstance(function_call["arguments"], str):
-                    function_call["arguments"] = json.loads(function_call["arguments"])
-
-            return function_call
-        else:
+        if "function_call" not in additional_kwargs:
             return result[0].text
+        function_call = additional_kwargs["function_call"]
+        if self.parse_json:
+            if isinstance(function_call, str):
+                function_call = json.loads(function_call)
+
+            if isinstance(function_call["arguments"], str):
+                function_call["arguments"] = json.loads(function_call["arguments"])
+
+        return function_call

@@ -23,10 +23,8 @@ class StringLoader(BaseLoader):
 
     def load(self) -> List[Document]:
         metadata = self.metadata or {}
-        documents = [Document(page_content=self.text, metadata=metadata)]
-        return documents
+        return [Document(page_content=self.text, metadata=metadata)]
 
     def lazy_load(self) -> Iterator[Document]:
         metadata = self.metadata or {}
-        documents = [Document(page_content=self.text, metadata=metadata)]
-        return documents
+        return [Document(page_content=self.text, metadata=metadata)]

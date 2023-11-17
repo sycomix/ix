@@ -4,9 +4,9 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-    def forwards_func(apps, schema_editor):
-        Chain = apps.get_model("chains", "Chain")
-        ChainNode = apps.get_model("chains", "ChainNode")
+    def forwards_func(self, schema_editor):
+        Chain = self.get_model("chains", "Chain")
+        ChainNode = self.get_model("chains", "ChainNode")
         for chain in Chain.objects.all():
             ChainNode.objects.filter(root_id=chain.root_id).update(chain_id=chain.id)
             ChainNode.objects.filter(id=chain.root_id).update(chain_id=chain.id)

@@ -70,15 +70,9 @@ def parse_type(type_string: str) -> str:
     # Pattern to match Optional or Optional[List]
     pattern = re.compile(r"(typing\.)?Optional\[(List\[\w+\]|\w+)\]")
 
-    match = pattern.match(type_string)
-    if match:
+    if match := pattern.match(type_string):
         # If it's Optional[List[T]], return 'list'
-        if match.group(2).startswith("List"):
-            return "list"
-        # If it's Optional[T], return T
-        else:
-            return match.group(2)
-    # If no match, return the original string
+        return "list" if match.group(2).startswith("List") else match.group(2)
     else:
         return type_string
 
@@ -187,15 +181,12 @@ class NodeTypeField(BaseModel):
             if issubclass(model, BaseModel):
                 # Pydantic v2 compat: __fields__ renamed to model_fields
                 model_fields = get_model_fields(model)
-                model_field = model_fields.get(field_name)
-                if model_field:
+                if model_field := model_fields.get(field_name):
                     default = model_field.default
                     if default is PydanticUndefined:
                         default = None
             elif hasattr(model, "__fields__"):
-                # Pydantic v1 compat
-                model_field = model.__fields__.get(field_name)
-                if model_field:
+                if model_field := model.__fields__.get(field_name):
                     default = model_field.default
                     if default is PydanticUndefined:
                         default = None
@@ -538,9 +529,8 @@ class NodeType(BaseModel):
 
     @staticmethod
     def build_array_property(schema, schema_type, field) -> dict:
-        items = []
         if field.choices is not None:
-            items.extend([{"type": choice.value} for choice in field.choices])
+            items = [{"type": choice.value} for choice in field.choices]
         property = {
             "type": "array",
             "items": [{"type": "string"}],
